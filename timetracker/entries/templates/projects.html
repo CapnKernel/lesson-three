@@ -1,13 +1,19 @@
 {% extends "base.html" %}
 
-{% block title %}Entries{% endblock %}
+{% block nav_active %}projects{% endblock %} {# page to show as active in nav bar #}
 
-{% block heading %}Entries{% endblock %}
+{% block title %}Projects{% endblock %}
+
+{% block heading %}Projects{% endblock %}
 
 {% block body %}
-  <ul>
-    {% for entry in entry_list %}
-      <li>{{ entry.description }}</li>
-    {% endfor %}
-  </ul>
+  {% if project_list %}
+    <ul>
+      {% for project in project_list %}
+        <li>{{ project.name }} for {{ project.client }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no projects to list.</p>
+  {% endif %}
 {% endblock %}

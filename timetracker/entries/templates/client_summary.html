@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block nav_active %}clients{% endblock %} {# page to show as active in nav bar #}
+
+{% block title %}Client summary for {{ client.name }}{% endblock %}
+
+{% block heading %}Client summary for {{ client.name }}{% endblock %}
+
+{% block body %}
+  {% if projects_list %}
+    <p>Here is a list of projects associated with this client, along with the number of entries for each project:</p>
+
+    {% for project in projects_list %}
+      <h3>Project {{ project.name }}</h3>
+
+      {% with entries=project.entry_set.all %}
+        {% with entries_count=entries.count %}
+          {% if entries_count %}
+            <ul>
+              {% for entry in entries %}
+                <li>
+                  <p>
+                    {{ entry.description}} from {{ entry.start }}{% if entry.stop %} to {{ entry.stop }}{% endif %}.
+                  </p>
+                </li>
+              {% endfor %}
+            </ul>
+            
+            <p>{{ entries_count }} {{ entries_count|pluralize:"entry,entries" }}.</p>
+          {% else %}
+            <p>This project has no associated entries.</p>
+          {% endif %}
+        {% endwith %}
+      {% endwith %}
+    {% endfor %}
+    
+    <p>{{ projects_list.count }} project{{ projects_list.count|pluralize:"s" }}.</p>
+
+  {% else %}
+    <p>There are no projects to list for this client.</p>
+  {% endif %}
+{% endblock %}

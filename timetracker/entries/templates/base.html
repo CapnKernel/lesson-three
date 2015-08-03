@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Entries</title>
+    <title>{% block title %}Unnamed page{% endblock %}</title>
 
     <style media="screen">
       .container {
@@ -49,21 +49,38 @@
         cursor: default;
       }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   </head>
   <body>
     <div class="container">
       <ul class="nav">
-        <li><a href="/entries/" class="active">Entries</a></li>
-        <li><a href="/clients/">Clients</a></li>
-        <li><a href="/projects/">Projects</a></li>
+        <li><a id='nav-entries' href="{% url 'entries' %}">Entries</a></li>
+        <li><a id='nav-clients' href="{% url 'clients' %}">Clients</a></li>
+        <li><a id='nav-projects' href="{% url 'projects' %}">Projects</a></li>
       </ul>
 
-      <h2>Entries</h2>
-      <ul>
-        {% for entry in entry_list %}
-        <li>{{ entry.description }}</li>
-        {% endfor %}
-      </ul>
+      <h2>{% block heading %}Unnamed heading{% endblock %}</h2>
+      
+      {% block body %}<p>This space for rent.</p>{% endblock %}
     </div>
+
+    <script type="text/javascript">
+      {% comment %}
+        // Show current page as active in nav bar
+        // (Django's extend template tag doesn't allow passing of args)
+        // I'm not the first to wonder how to do this:
+        //
+        //   http://stackoverflow.com/questions/1024168/django-is-there-a-better-way-to-bold-the-current-page-link?lq=1
+        //
+        // This way will do for now, although it requires jQuery.  What we do is give each page
+        // an id, and pass in a page name, from which we can compute the id, and add the active
+        // class to the node with that id.  Bug: Since it happens in a script which only runs
+        // once the page has loaded, it's a bit laggy.  Sigh.
+      {% endcomment %}
+
+      jQuery(document).ready(function() {
+        $('#nav-{% block nav_active %}undefined{% endblock %}').addClass('active');
+      });
+    </script>
   </body>
 </html>

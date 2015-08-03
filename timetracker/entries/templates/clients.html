@@ -1,13 +1,19 @@
 {% extends "base.html" %}
 
-{% block title %}Entries{% endblock %}
+{% block nav_active %}clients{% endblock %} {# page to show as active in nav bar #}
 
-{% block heading %}Entries{% endblock %}
+{% block title %}Clients{% endblock %}
+
+{% block heading %}Clients{% endblock %}
 
 {% block body %}
-  <ul>
-    {% for entry in entry_list %}
-      <li>{{ entry.description }}</li>
-    {% endfor %}
-  </ul>
+  {% if client_list %}
+    <ul>
+      {% for client in client_list %}
+        <li><a href="{% url 'client_summary' client.pk %}">{{ client.name }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no clients to list.</p>
+  {% endif %}
 {% endblock %}
